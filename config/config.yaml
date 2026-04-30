@@ -1,0 +1,4 @@
+# config.yaml
+database: "/home/chandru/lu2025-12-38/Students/chandru/tel-meggido/kraken2_telmegiddo_db"
+genome_config: "/home/chandru/tel-megiddo/config/genome_groups.yaml"
+log_dir: "/home/chandru/tel-megiddo/logs"
