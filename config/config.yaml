@@ -1,4 +1,72 @@
 # config.yaml
-database: "/home/chandru/lu2025-12-38/Students/chandru/tel-meggido/kraken2_telmegiddo_db"
-genome_config: "/home/chandru/tel-megiddo/config/genome_groups.yaml"
-log_dir: "/home/chandru/tel-megiddo/logs"
+database_base: "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases"
+genome_config:  "/home/chandru/tel-megiddo/config/genome_groups.yaml"
+log_dir:        "/home/chandru/tel-megiddo/logs"
+threads: 16
+read_length: 75        # aDNA average read length for Bracken
+kmer_len: 35
+minimizer_len: 31
+minimizer_spaces: 6
+
+
+
+genomes:
+
+# Chicken relatives
+  gallus_latest_ref:
+    accession: "GCF_016699485.2"
+    label: "Gallus gallus latest ref"
+    taxid: 9031
+    method: datasets
+
+  gallus_complete:
+    accession: "GCA_024206055.2"      
+    label: "Gallus gallus complete genome"
+    taxid: 9031
+    method: datasets
+
+  coturnix:
+    accession: "GCF_001577835.2"
+    label: "Japanese quail"
+    taxid: 93934
+    method: datasets
+
+  turkey:
+    accession: "GCF_000146605.3"
+    label: "Turkey"
+    taxid: 9103
+    method: datasets
+
+  phasianus:
+    accession: "GCF_004143745.1"
+    label: "Common pheasant"
+    taxid: 9054
+    method: datasets
+  
+  #peafowl:
+  #  accession: "" # Need to get this
+  #  label: "Peacock"
+  #  method: datasets
+
+# Bacteria
+
+
+# Fish
+
+
+db_builds:
+
+  run_gallus_standard:
+    includes:
+      - gallus_standard
+      - coturnix
+      - turkey
+      - phasianus
+
+
+  run_gallus_complete:
+    includes:
+      - gallus_complete
+      - coturnix
+      - turkey
+      - phasianus
