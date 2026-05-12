@@ -58,7 +58,7 @@ db_builds:
 
   run_gallus_standard:
     includes:
-      - gallus_standard
+      - gallus_latest_ref
       - coturnix
       - turkey
       - phasianus

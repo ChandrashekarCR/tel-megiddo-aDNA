@@ -20,7 +20,7 @@ def download_genome(name: str, genome: dict, downloads_dir: str, log_dir: str) -
     os.makedirs(out_dir,exist_ok=True)
 
     if sentinel(done_flag):
-        logger.info(f"[SKIP] {name} already downloaded.")
+        logger.info(f"{name} already downloaded.")
         return out_dir
 
     method = genome["method"]
@@ -29,7 +29,10 @@ def download_genome(name: str, genome: dict, downloads_dir: str, log_dir: str) -
     if method == "datasets":
         zip_path = os.path.join(out_dir,f"{name}.zip")
         logger.info(f"Downloading {name} ({acc} via datasets CLI..")
-        run(["datasets","dowload","genome","accession",acc, "--include", "genome","--filename",zip_path],log_file,logger)
+        run(["datasets", "download", "genome", "accession", acc,
+             "--include", "genome",
+             "--filename", zip_path],
+            log_file, logger)
         run(["unzip", "-q", "-o", zip_path, "-d", out_dir],log_file, logger)
         os.remove(zip_path)
     
@@ -37,5 +40,5 @@ def download_genome(name: str, genome: dict, downloads_dir: str, log_dir: str) -
         raise ValueError(f"Unknown download method '{method}' for {name}")
 
     mark_done(done_flag)
-    logger.info(f"[OK] {name} downloaded to {out_dir}")
+    logger.info(f"{name} downloaded to {out_dir}")
     return out_dir
