@@ -33,7 +33,7 @@ def tag_fasta(name:str, taxid: int, download_dir: str, tagged_dir: str, log_dir:
     logger    = get_logger(f"tag.{name}", log_file)
 
     if sentinel(done_flag):
-        logger.info(f"[SKIP] {name} already tagged.")
+        logger.info(f"{name} already tagged.")
         return out_fna
 
     fastas = find_fasta(download_dir)
@@ -57,6 +57,6 @@ def tag_fasta(name:str, taxid: int, download_dir: str, tagged_dir: str, log_dir:
                     else:
                         f.write(line)
 
-    logger.info(f"[OK] Tagged {seqs_tagged} sequences for {name}")
+    logger.info(f"Tagged {seqs_tagged} sequences for {name}")
     mark_done(done_flag)
     return out_fna
