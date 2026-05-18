@@ -67,16 +67,13 @@ mkdir -p $out_dir
 find "$raw_dir" -type f -name "*.fq.gz" | while read -r fq; do
 	base=$(basename "$fq")
 	base=${base%.fq.gz}
-	out_file="$out_dir/${base}.read_length_dist.tsv"
+	out_file="$out_dir/${base}.read_length_dist.txt"
 
-	if ! zcat "$fq" 2>/dev/null |
-			awk 'NR % 4 == 2 {len=length($0); count[len]++} END {for (l in count) print l "\t" count[l]}' |
-			sort -n > "$out_file"; then
+	if ! seqkit fx2tab -l -n -i "$fq" > "$out_file"; then
         echo "Error: Failed to process $fq" >&2
         exit 1
     fi
-	
-    if [[ ! -s "$out_file" ]]; then
+	if [[ ! -s "$out_file" ]]; then
         echo "Error: Output file is empty: $out_file" >&2
         exit 1
     fi

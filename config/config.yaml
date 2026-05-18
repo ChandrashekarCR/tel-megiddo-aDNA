@@ -41,11 +41,6 @@ genomes:
     taxid: 9054
     method: datasets
   
-  #peafowl:
-  #  accession: "" # Need to get this
-  #  label: "Peacock"
-  #  method: datasets
-
 # Bacteria
 
 
