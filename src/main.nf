@@ -11,6 +11,7 @@ params.script = "src/nf_helper"
 include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
 include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
+include { KRAKEN } from "./modules/tax_classification.nf"
 
 workflow {
     // Create input channels
@@ -42,7 +43,8 @@ workflow {
     // Step 4: Plot K-mer
     _plot_ch = PLOT(kmer_ch,plot_script)
 
-    // Step 5: Kraken Bracken Estimation
+    // Step 5: Kraken Bracken 
+    _kraken_ch = KRAKEN(fastq_ch)
 
     // Step 6: Merge results
     

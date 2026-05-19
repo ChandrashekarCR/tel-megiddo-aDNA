@@ -173,7 +173,7 @@ def main():
     logger.info("Completed")
     for build_name in builds_to_run:
         db_dir = os.path.join(db_base, build_name)
-        logger.info(f"  {build_name}: {db_dir}")
+        logger.info(f"{build_name}: {db_dir}")
 
 
 if __name__ == "__main__":
