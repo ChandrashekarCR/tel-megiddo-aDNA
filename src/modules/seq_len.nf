@@ -23,7 +23,7 @@ process MERGE_COUNT {
     publishDir "${params.outdir}/01_seqlen", mode: "copy"
 
     input:
-    path readlen_files
+    path(readlen_files)
 
     output:
     path "merged_read_length_dist.txt"

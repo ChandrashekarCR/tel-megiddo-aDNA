@@ -4,10 +4,11 @@ nextflow.enable.dsl=2
 
 params.input_data = "data/telmgd_qced/*.fq.gz"
 params.outdir = "results"
-params.bin = "bin"
+
 
 // Here we include the modules
 include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
+include { KMER } from "./modules/kmer.nf"
 
 workflow {
     // Create input channels
@@ -23,8 +24,14 @@ workflow {
     seqlen_ch = SEQ_LEN(fastq_ch)
 
     // Step 2: Merge all the sequence lengths
-    merged_input = seqlen_ch.map { sample_id, f -> f }.collect()
+    readlen_files_ch = seqlen_ch
+                    .map { _sample_id, readlen_file -> readlen_file }
+                    .collect()
 
-    MERGE_COUNT(merged_input)
+    MERGE_COUNT(readlen_files_ch)
+
+    // Step 3: K-mer analysis
+    kmer_script = file("${workflow.projectDir}/src/kmer.py")
+    _kmer_ch = KMER(seqlen_ch, kmer_script)
 
 }
