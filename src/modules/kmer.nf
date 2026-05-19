@@ -8,7 +8,7 @@ process KMER {
 
     input:
     tuple val(sample_id), path(read_len)
-    path(kmer_script)
+    path kmer_script
 
     output:
     tuple val(sample_id), path("${sample_id}_kmer_dist.csv")
