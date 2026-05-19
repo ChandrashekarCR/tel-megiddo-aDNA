@@ -3,10 +3,10 @@ database_base: "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases"
 raw_data:  "/home/chandru/tel-megiddo/data/telmgd_qced/"
 log_dir: "/home/chandru/tel-megiddo/logs"
 threads: 16
-read_length: 75        # aDNA average read length for Bracken
-kmer_len: 35
-minimizer_len: 31
-minimizer_spaces: 6
+read_length: 50        # aDNA average read length for Bracken
+kmer_len: 25
+minimizer_len: 21
+minimizer_spaces: 5
 
 genomes:
 

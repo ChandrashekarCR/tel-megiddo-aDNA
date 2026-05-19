@@ -18,4 +18,4 @@ if command -v conda >/dev/null 2>&1; then
 fi
 
 # Run this bash script
-/home/chandru/tel-megiddo/src/run.sh
+/home/chandru/tel-megiddo/src/db_build/run.sh

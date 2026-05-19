@@ -5,7 +5,8 @@ nextflow.enable.dsl=2
 params.input_data = "data/telmgd_qced/*.fq.gz"
 params.outdir = "results"
 params.script = "src/nf_helper"
-
+params.kraken2_db = "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases/run_gallus_standard"
+params.read_len = 50
 
 // Here we include the modules
 include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
