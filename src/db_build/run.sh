@@ -2,7 +2,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CONFIG="$SCRIPT_DIR/../config/config.yaml"
+echo $SCRIPT_DIR
+CONFIG="$SCRIPT_DIR/../../config/config.yaml"
 
 eval "$(conda shell.bash hook)"
 conda activate "tel-megiddo"

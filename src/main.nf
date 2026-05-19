@@ -30,16 +30,21 @@ workflow {
     seqlen_ch = SEQ_LEN(fastq_ch)
 
     // Step 2: Merge all the sequence lengths
-    readlen_files_ch = seqlen_ch
-                    .map { _sample_id, readlen_file -> readlen_file }
-                    .collect()
-
-    MERGE_COUNT(readlen_files_ch)
+    //readlen_files_ch = seqlen_ch
+    //                .map { _sample_id, readlen_file -> readlen_file }
+    //                .collect()
+//
+    //MERGE_COUNT(readlen_files_ch)
 
     // Step 3: K-mer analysis
     kmer_ch = KMER(seqlen_ch, kmer_script)
 
     // Step 4: Plot K-mer
     _plot_ch = PLOT(kmer_ch,plot_script)
+
+    // Step 5: Kraken Bracken Estimation
+
+    // Step 6: Merge results
+    
 
 }

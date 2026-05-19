@@ -31,3 +31,4 @@ clean: # Clean all the cache files and .out and .err files from slurm runs
 	@find . -type d -name ".ruff_cache" -exec rm -rf {} +
 	@find . -type f -name ".nextflow*" -exec rm -rf {} +
 	@echo "[clean] ok"
+
