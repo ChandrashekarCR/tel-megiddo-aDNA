@@ -3,10 +3,10 @@ database_base: "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases"
 raw_data:  "/home/chandru/tel-megiddo/data/telmgd_qced/"
 log_dir: "/home/chandru/tel-megiddo/logs"
 threads: 16
-read_length: 50        # aDNA average read length for Bracken
-kmer_len: 25
-minimizer_len: 21
-minimizer_spaces: 5
+read_length: 50        # aDNA average read length for Bracken. This must be set accroding to the dataset.
+kmer_len: 25           # K-mer size breaks the read into k sizes and compares it against the kraken database
+minimizer_len: 21      # Analyzes all the possible minmizers inside a k-mer len. 25-21+1 = 5 possible minimizers
+minimizer_spaces: 5    # This is to simulate the after how many nucleotides there is a space. This is to ensure the reads
 
 genomes:
 
