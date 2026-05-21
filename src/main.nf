@@ -14,6 +14,7 @@ include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
 include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
 include { KRAKEN; BRACKEN } from "./modules/tax_classification.nf"
+include { STANDARDIZE_BRACKEN; MERGE_BRACKEN } from "./modules/post_classification.nf"
 
 workflow {
     // Create input channels
@@ -28,6 +29,7 @@ workflow {
     // Helper scripts 
     kmer_script = file("${params.script}/kmer.py")
     plot_script = file("${params.script}/plot.py")
+    std_bracken = file("${params.script}/standardize_bracken.py")
 
     // Step 1: Caculate seq length
     seqlen_ch = SEQ_LEN(fastq_ch)
@@ -55,9 +57,17 @@ workflow {
     // combine = Cartesian product: every sample × every rank, already flat
     bracken_input = kraken_report_ch.combine(ranks_ch)
 
-    _bracken_ch = BRACKEN(bracken_input)
+    bracken_ch = BRACKEN(bracken_input).map { sample_id, rank, bracken_report, _bracken_log -> 
+            tuple(sample_id, rank, bracken_report)}
 
     // Step 6: Merge results
-    
+    std_ch = STANDARDIZE_BRACKEN(bracken_ch,std_bracken)
+
+    merge_input_ch = std_ch.map {_sample_id, rank, csv -> tuple(rank,csv)}
+                            .groupTuple(by:0)
+
+    _merged_ch = MERGE_BRACKEN(merge_input_ch, std_bracken) 
+
+
 
 }

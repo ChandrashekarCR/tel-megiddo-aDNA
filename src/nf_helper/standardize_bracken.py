@@ -1,15 +1,12 @@
 # Import libraries
 import os
 import shutil
-
+import argparse
 import pandas as pd
 
 
-def standardize_bracken(input_file: str, output_dir=None, min_abd: float = 0.001):
+def standardize_bracken(input_file: str, sample:str,rank:str, output_file: str, min_abd: float = 0.001):
     df = pd.read_csv(input_file, sep="\t")
-    abs_path = input_file.split("/")  # This works only if the file format follows the pipeline conventions
-    sample = abs_path[-2]
-    rank = abs_path[-1].split(".")[0]
     df["classifier"] = "kraken_bracken"
 
     # Set abundance to zero if below the threshold
@@ -21,7 +18,7 @@ def standardize_bracken(input_file: str, output_dir=None, min_abd: float = 0.001
     standardized_df = df[["classifier", "name", "taxonomy_id", sample]]
     standardized_df.columns = ["classifier", "clade", "tax_id", sample]
 
-    standardized_df.to_csv(os.path.join(output_dir, sample + "_" + rank + ".csv"), header=True, index=False)
+    standardized_df.to_csv(output_file, header=True, index=False)
 
 
 def concat_tables(sample_list, fo):
@@ -63,3 +60,20 @@ def concat_tables(sample_list, fo):
 
         # Save the merged table
         merged.to_csv(fo, header=True, index=False)
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("--mode", choices=["standardize", "merge"], required=True)
+    # standardize args
+    p.add_argument("-i", "--input_file", nargs="+", required=True)  # nargs=+ handles both modes
+    p.add_argument("-s", "--sample",     required=False)
+    p.add_argument("-r", "--rank",       required=False)
+    p.add_argument("-o", "--output_file", required=True)
+    p.add_argument("--min_abd", type=float, default=0.001)
+    args = p.parse_args()
+
+    if args.mode == "standardize":
+        standardize_bracken(args.input_file[0], args.sample, args.rank,
+                            args.output_file, args.min_abd)
+    elif args.mode == "merge":
+        concat_tables(args.input_file, args.output_file)
