@@ -6,13 +6,14 @@ params.input_data = "data/telmgd_qced/*.fq.gz"
 params.outdir = "results"
 params.script = "src/nf_helper"
 params.kraken2_db = "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases/run_gallus_standard"
+params.bracken_db = "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases/run_gallus_standard"
 params.read_len = 50
 
 // Here we include the modules
 include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
 include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
-include { KRAKEN } from "./modules/tax_classification.nf"
+include { KRAKEN; BRACKEN } from "./modules/tax_classification.nf"
 
 workflow {
     // Create input channels
@@ -45,7 +46,16 @@ workflow {
     _plot_ch = PLOT(kmer_ch,plot_script)
 
     // Step 5: Kraken Bracken 
-    _kraken_ch = KRAKEN(fastq_ch)
+    kraken_ch = KRAKEN(fastq_ch)
+    kraken_report_ch = kraken_ch.map { sample_id, _kraken_tsv, kraken_report, _kraken_log -> tuple(sample_id, kraken_report)}
+
+
+    ranks = ["phylum","family","genus","species"]
+    ranks_ch = channel.fromList(ranks)
+    // combine = Cartesian product: every sample × every rank, already flat
+    bracken_input = kraken_report_ch.combine(ranks_ch)
+
+    _bracken_ch = BRACKEN(bracken_input)
 
     // Step 6: Merge results
     
