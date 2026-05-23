@@ -28,6 +28,14 @@ process KRAKEN {
         ${fastq} > ${sample_id}/kraken.log 2>&1
     """
 
+    stub:
+    """
+    mkdir -p ${sample_id}
+    printf "mock_read_id\\t0\\t100\\t1\\t0\\n" > ${sample_id}/kraken.tsv
+    printf "100.00\\t100\\t100\\tno rank\\t0\\tUnclassified\\n" > ${sample_id}/kraken_report.tsv
+    echo "Kraken2 stub run - mock mode" > ${sample_id}/kraken.log
+    """
+
 }
 
 process BRACKEN {
@@ -45,9 +53,8 @@ process BRACKEN {
     tuple val(sample_id), val(rank), path("${sample_id}/${rank}.tsv"), path("${sample_id}/bracken_${rank}.log")
 
     script:
-    def rank_short = rank.take(1).toUpperCase()
-
     """
+    rank_short=${rank[0].toUpperCase()}
 
     mkdir -p ${sample_id}
 
@@ -56,6 +63,14 @@ process BRACKEN {
         -i ${kraken_report} \
         -o ${sample_id}/${rank}.tsv \
         -d ${params.bracken_db} \
-        -l ${rank_short} > ${sample_id}/bracken_${rank}.log 2>&1
+        -l \${rank_short} > ${sample_id}/bracken_${rank}.log 2>&1
+    """
+    
+    stub:
+    """
+    mkdir -p ${sample_id}
+    printf "name\\ttaxonomy_id\\ttaxonomy_lvl\\tkraken_assigned_reads\\tadded_reads\\tnew_est_reads\\tfraction_total_reads\\n" > ${sample_id}/${rank}.tsv
+    printf "Unclassified\\t0\\tno rank\\t100\\t0\\t100\\t1.0\\n" >> ${sample_id}/${rank}.tsv
+    echo "Bracken stub run for ${rank} - mock mode" > ${sample_id}/bracken_${rank}.log
     """
 }

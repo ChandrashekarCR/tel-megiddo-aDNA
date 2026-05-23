@@ -22,6 +22,13 @@ process STANDARDIZE_BRACKEN {
         -o ${sample_id}/${sample_id}_${rank}.csv
     """
 
+    stub:
+    """
+    mkdir -p ${sample_id}
+    echo "classifier,clade,tax_id,${sample_id}" > ${sample_id}/${sample_id}_${rank}.csv
+    echo "kraken_bracken,Unclassified,0,1.0" >> ${sample_id}/${sample_id}_${rank}.csv
+    """
+
 }
 
 process MERGE_BRACKEN {
@@ -41,5 +48,11 @@ process MERGE_BRACKEN {
         --mode merge \
         -i ${csv_files} \
         -o ${rank}_merged.csv
+    """
+
+    stub:
+    """
+    echo "classifier,clade,tax_id,sample_merged" > ${rank}_merged.csv
+    echo "kraken_bracken,Unclassified,0,1.0" >> ${rank}_merged.csv
     """
 }

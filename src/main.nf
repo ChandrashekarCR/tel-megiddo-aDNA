@@ -3,7 +3,7 @@
 nextflow.enable.dsl=2
 
 // Here we include the modules
-include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
+include { SEQ_LEN } from "./modules/seq_len.nf"
 include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
 include { KRAKEN; BRACKEN } from "./modules/tax_classification.nf"
