@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+
+jobs:
+  lint-and-test:
+    name: Lint,Test and Smoke Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      
+      - name: Setuo Miniforge (Conda)
+        uses: conda-incubator/setup-minconda@v3
+        with:
+          environment-file: environment.yaml
+          auto-activate-base: false
+          activate-environment: tel-megiddo
+          use-mamba: true
+      
+      - name: Code format and linting
+        run: |
+          make format
+          make lint
+      
+      - name: Run pytest
+        run: |
+          make test
+      
+      - name: Run Nextflow Smoke Test
+        run: |
+          make smoke-test
+        

@@ -1,7 +1,9 @@
 BASE_PYTHON ?= python
 CONDA_ENV_NAME := tel-megiddo
-PYTHON := ~/.conda/envs/$(CONDA_ENV_NAME)/bin/python
-NEXTFLOW := ~/.conda/envs/$(CONDA_ENV_NAME)/bin/nextflow
+
+# Use conda run to safely execute inside the environment without hardcoding paths
+PYTHON := conda run --no-capture-output -n $(CONDA_ENV_NAME) python
+NEXTFLOW := conda run --no-capture-output -n $(CONDA_ENV_NAME) nextflow
 
 DEFAULT_GOAL := all
 SHELL := bash
@@ -65,7 +67,6 @@ test: # Run pytests for script
 
 smoke-test: # Run Nextflow workflow in stub mode (CI smoke test)
 	@echo "Running Nextflow smoke test (stub mode).."
-	@which $(NEXTFLOW) > /dev/null || (echo '[smoke-test] nextflow not found. Install with: conda install -c bioconda nextflow' >&2; exit 1)
 	
 	@$(NEXTFLOW) run src/main.nf \
 		-c config/test.config \

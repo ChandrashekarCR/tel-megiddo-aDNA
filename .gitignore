@@ -1,0 +1,17 @@
+# Ignore .files
+.nextflow
+.vscode
+
+# Ignore folders
+/bin
+/data
+/logs
+/results
+/notebooks
+/work
+
+# Ignore cache files
+__pycache__
+
+# Ignore sif files
+*.sif
