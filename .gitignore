@@ -1,6 +1,7 @@
 # Ignore .files
 .nextflow
 .vscode
+.github_access_token
 
 # Ignore folders
 /bin
