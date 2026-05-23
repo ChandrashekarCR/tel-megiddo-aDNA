@@ -2,13 +2,6 @@
 
 nextflow.enable.dsl=2
 
-params.input_data = "data/telmgd_qced/*.fq.gz"
-params.outdir = "results"
-params.script = "src/nf_helper"
-params.kraken2_db = "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases/run_gallus_standard"
-params.bracken_db = "/home/chandru/lu2025-12-38/Students/chandru/kraken_databases/run_gallus_standard"
-params.read_len = 50
-
 // Here we include the modules
 include { SEQ_LEN; MERGE_COUNT } from "./modules/seq_len.nf"
 include { KMER } from "./modules/kmer.nf"
@@ -20,7 +13,7 @@ workflow {
     // Create input channels
     // Here we will have input channel that will input the fastq.gz files
     fastq_ch = channel
-                .fromPath(params.input_data)
+                .fromPath(params.input_dir)
                 .map { file ->
                         def sample_id = file.name.replaceAll(/.*_/,"").replaceAll(/\.fq\.gz$/,"")
                         tuple (sample_id, file)
