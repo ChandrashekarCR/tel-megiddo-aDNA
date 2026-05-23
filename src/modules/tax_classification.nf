@@ -22,7 +22,7 @@ process KRAKEN {
 
     kraken2 \
         --db ${params.kraken2_db} \
-        --threads ${task.cpus} \
+        --threads 12 \
         --report ${sample_id}/kraken_report.tsv \
         --output ${sample_id}/kraken.tsv \
         ${fastq} > ${sample_id}/kraken.log 2>&1

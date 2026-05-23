@@ -1,6 +1,6 @@
 BASE_PYTHON ?= python
 CONDA_ENV_NAME := tel-megiddo
-PYTHON := ~/.conda/envs/tel-megiddo/bin/python
+PYTHON := /opt/conda/envs/$(CONDA_ENV_NAME)/bin/python
 
 DEFAULT_GOAL := all
 SHELL := bash
