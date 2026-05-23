@@ -36,13 +36,18 @@ Staphylococcus aureus\t1280\tS\t50\t5\t55\t0.0006
         - Creates standardized output format
         - Saves output file
         """
-        output_dir = tmp_path / "standardized"
-        output_dir.mkdir()
+        output_file = tmp_path / "standardized.csv"
 
-        standardize_bracken(sample_bracken_output, output_dir=str(output_dir), min_abd=0.001)
+        standardize_bracken(
+            sample_bracken_output,
+            sample="sample1",
+            rank="species",
+            output_file=str(output_file),
+            min_abd=0.001,
+        )
 
         # Check output file was created
-        expected_file = output_dir / "sample1_species.csv"
+        expected_file = output_file
         assert expected_file.exists(), "Output file should be created"
 
         # Verify output content
@@ -80,13 +85,18 @@ Low_abundance\t3\tS\t10\t1\t11\t0.0001
         input_file = sample_dir / "species.bracken"
         input_file.write_text(bracken_content)
 
-        output_dir = tmp_path / "out"
-        output_dir.mkdir()
+        output_file = tmp_path / "out.csv"
 
         # Test with threshold of 0.001
-        standardize_bracken(str(input_file), output_dir=str(output_dir), min_abd=0.001)
+        standardize_bracken(
+            str(input_file),
+            sample="test_sample",
+            rank="species",
+            output_file=str(output_file),
+            min_abd=0.001,
+        )
 
-        df = pd.read_csv(output_dir / "test_sample_species.csv")
+        df = pd.read_csv(output_file)
 
         # High and medium should pass, low should be filtered
         assert df[df["clade"] == "High_abundance"]["test_sample"].values[0] == 0.1

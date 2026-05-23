@@ -5,13 +5,14 @@ import subprocess
 from pathlib import Path
 
 
-def load_config(config_path:str) -> dict:
+def load_config(config_path: str) -> dict:
     """
     Load config.yaml and genome_groups.yaml, merge into one dict
     """
     with open(config_path) as f:
         cfg = yaml.safe_load(f)
     return cfg
+
 
 def get_logger(name: str, log_file: str) -> logging.Logger:
     """
@@ -20,8 +21,9 @@ def get_logger(name: str, log_file: str) -> logging.Logger:
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
-    fmt = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s",
-                            datefmt="%H:%M:%S")
+    fmt = logging.Formatter(
+        "%(asctime)s [%(levelname)s] %(message)s", datefmt="%H:%M:%S"
+    )
     fh = logging.FileHandler(log_file)
     fh.setFormatter(fmt)
     ch = logging.StreamHandler()
@@ -54,6 +56,5 @@ def run(cmd: list, log_file: str, logger: logging.Logger):
     with open(log_file, "a") as lf:
         result = subprocess.run(cmd, stdout=lf, stderr=subprocess.STDOUT)
     if result.returncode != 0:
-        logger.error(f"Command failed (exit {result.returncode}). "
-                     f"See: {log_file}")
+        logger.error(f"Command failed (exit {result.returncode}). See: {log_file}")
         raise RuntimeError(f"Step failed: {' '.join(cmd)}")

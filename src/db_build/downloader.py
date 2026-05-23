@@ -1,7 +1,4 @@
 import os
-import glob
-import subprocess
-from pathlib import Path
 from utils import get_logger, sentinel, mark_done, run
 
 
@@ -15,27 +12,38 @@ def download_genome(name: str, genome: dict, downloads_dir: str, log_dir: str) -
     out_dir = os.path.join(downloads_dir, name)
     done_flag = os.path.join(out_dir, ".done_download")
     log_file = os.path.join(log_dir, f"download_{name}.log")
-    logger = get_logger(f"dl.{name}",log_file)
+    logger = get_logger(f"dl.{name}", log_file)
 
-    os.makedirs(out_dir,exist_ok=True)
+    os.makedirs(out_dir, exist_ok=True)
 
     if sentinel(done_flag):
         logger.info(f"{name} already downloaded.")
         return out_dir
 
     method = genome["method"]
-    acc    = genome["accession"]
+    acc = genome["accession"]
 
     if method == "datasets":
-        zip_path = os.path.join(out_dir,f"{name}.zip")
+        zip_path = os.path.join(out_dir, f"{name}.zip")
         logger.info(f"Downloading {name} ({acc} via datasets CLI..")
-        run(["datasets", "download", "genome", "accession", acc,
-             "--include", "genome",
-             "--filename", zip_path],
-            log_file, logger)
-        run(["unzip", "-q", "-o", zip_path, "-d", out_dir],log_file, logger)
+        run(
+            [
+                "datasets",
+                "download",
+                "genome",
+                "accession",
+                acc,
+                "--include",
+                "genome",
+                "--filename",
+                zip_path,
+            ],
+            log_file,
+            logger,
+        )
+        run(["unzip", "-q", "-o", zip_path, "-d", out_dir], log_file, logger)
         os.remove(zip_path)
-    
+
     else:
         raise ValueError(f"Unknown download method '{method}' for {name}")
 
