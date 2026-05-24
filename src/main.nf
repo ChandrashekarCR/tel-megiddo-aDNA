@@ -8,6 +8,7 @@ include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
 include { KRAKEN; BRACKEN } from "./modules/tax_classification.nf"
 include { STANDARDIZE_BRACKEN; MERGE_BRACKEN } from "./modules/post_classification.nf"
+include { DOWNLOAD_GALLUS } from "./modules/blastdb.nf"
 
 workflow {
     // Create input channels
@@ -61,6 +62,7 @@ workflow {
 
     _merged_ch = MERGE_BRACKEN(merge_input_ch, std_bracken) 
 
-
+    // Download Gallus Gallus genome
+    DOWNLOAD_GALLUS(channel.value(params.gallus_package))
 
 }
