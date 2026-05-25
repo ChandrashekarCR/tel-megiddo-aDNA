@@ -54,8 +54,6 @@ process BRACKEN {
 
     script:
     """
-    rank_short=${rank[0].toUpperCase()}
-
     mkdir -p ${sample_id}
 
     bracken \
@@ -63,7 +61,7 @@ process BRACKEN {
         -i ${kraken_report} \
         -o ${sample_id}/${rank}.tsv \
         -d ${params.bracken_db} \
-        -l \${rank_short} > ${sample_id}/bracken_${rank}.log 2>&1
+        -l ${rank[0].toUpperCase()} > ${sample_id}/bracken_${rank}.log 2>&1
     """
     
     stub:
