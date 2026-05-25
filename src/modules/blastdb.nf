@@ -53,4 +53,16 @@ process MAKE_BLAST_DB {
         -parse_seqids \
         -taxid 9031
     """
+
+    stub:
+    """
+    # Stub: create a dummy gallus_blast_db directory in the workdir
+    mkdir -p gallus_blast_db
+
+    # Put dummy BLAST DB files so tools later in the pipeline can find them
+    echo "dummy_gallus_1" > gallus_blast_db/gallus.nin
+    echo "dummy_gallus_2" > gallus_blast_db/gallus.nhr
+    echo "dummy_gallus_3" > gallus_blast_db/gallus.ndb
+    touch gallus_blast_db/gallus.nsq
+    """
 }
