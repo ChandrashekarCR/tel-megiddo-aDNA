@@ -61,7 +61,9 @@ process BRACKEN {
         -i ${kraken_report} \
         -o ${sample_id}/${rank}.tsv \
         -d ${params.bracken_db} \
-        -l ${rank[0].toUpperCase()} > ${sample_id}/bracken_${rank}.log 2>&1
+        -l ${rank[0].toUpperCase()} > ${sample_id}/bracken_${rank}.log 2>&1 \
+    || printf "name\ttaxonomy_id\ttaxonomy_lvl\tkraken_assigned_reads\tadded_reads\tnew_est_reads\tfraction_total_reads\n" > ${sample_id}/${rank}.tsv
+
     """
     
     stub:
