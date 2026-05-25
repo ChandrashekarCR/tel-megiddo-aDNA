@@ -1,4 +1,4 @@
-
+// nextflow run src/main.nf -c config/nextflow_slurm.config -profile slurm
 
 nextflow.enable.dsl=2
 
@@ -8,7 +8,7 @@ include { KMER } from "./modules/kmer.nf"
 include { PLOT } from "./modules/plot.nf"
 include { KRAKEN; BRACKEN } from "./modules/tax_classification.nf"
 include { STANDARDIZE_BRACKEN; MERGE_BRACKEN } from "./modules/post_classification.nf"
-include { DOWNLOAD_GALLUS } from "./modules/blastdb.nf"
+include { DOWNLOAD_GALLUS; MAKE_BLAST_DB } from "./modules/blastdb.nf"
 
 workflow {
     // Create input channels
@@ -27,13 +27,6 @@ workflow {
 
     // Step 1: Caculate seq length
     seqlen_ch = SEQ_LEN(fastq_ch)
-
-    // Step 2: Merge all the sequence lengths
-    //readlen_files_ch = seqlen_ch
-    //                .map { _sample_id, readlen_file -> readlen_file }
-    //                .collect()
-//
-    //MERGE_COUNT(readlen_files_ch)
 
     // Step 3: K-mer analysis
     kmer_ch = KMER(seqlen_ch, kmer_script)
@@ -63,6 +56,9 @@ workflow {
     _merged_ch = MERGE_BRACKEN(merge_input_ch, std_bracken) 
 
     // Download Gallus Gallus genome
-    DOWNLOAD_GALLUS(channel.value(params.gallus_package))
+    gallus_ch = channel.value(params.gallus_package)
+    def (_zip_ch, fasta_ch) = DOWNLOAD_GALLUS(gallus_ch)
+
+    MAKE_BLAST_DB(fasta_ch)
 
 }
