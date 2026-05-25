@@ -4,7 +4,7 @@ raw_data:  "/home/chandru/tel-megiddo/data/telmgd_qced/"
 log_dir: "/home/chandru/tel-megiddo/logs"
 threads: 16
 read_length: 50        # aDNA average read length for Bracken. This must be set accroding to the dataset.
-kmer_len: 25           # K-mer size breaks the read into k sizes and compares it against the kraken database
+kmer_len: 30           # K-mer size breaks the read into k sizes and compares it against the kraken database
 minimizer_len: 21      # Analyzes all the possible minmizers inside a k-mer len. 25-21+1 = 5 possible minimizers
 minimizer_spaces: 5    # This is to simulate the after how many nucleotides there is a space. This is to ensure the reads
 
@@ -49,7 +49,7 @@ genomes:
 
 db_builds:
 
-  run_gallus_standard:
+  run_gallus_standard_k30:
     includes:
       - gallus_latest_ref
       - coturnix
@@ -57,9 +57,9 @@ db_builds:
       - phasianus
 
 
-  run_gallus_complete:
-    includes:
-      - gallus_complete
-      - coturnix
-      - turkey
-      - phasianus
+  #run_gallus_complete:
+  #  includes:
+  #    - gallus_complete
+  #    - coturnix
+  #    - turkey
+  #    - phasianus
