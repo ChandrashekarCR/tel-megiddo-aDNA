@@ -1,5 +1,5 @@
 # Ignore .files
-.nextflow
+.nextflow*
 .vscode
 .github_access_token
 *.log

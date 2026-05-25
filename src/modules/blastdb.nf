@@ -19,6 +19,20 @@ process DOWNLOAD_GALLUS {
     unzip ${base}.zip -d ${base}
     """
 
+    stub:
+    """
+    # Stub: pretend we downloaded Gallus gallus
+    #   - create a dummy .zip file
+    #   - create a dummy base/ncbi_dataset tree that resembles real NCBI datasets
+
+    touch ${base}.zip
+
+    mkdir -p ${base}/ncbi_dataset/data/${params.gallus_accession}
+    echo "stub_fasta_gallus_gallus" > ${base}/ncbi_dataset/data/${params.gallus_accession}/genome.fna
+
+    # We don't need to zip the tree here; real workflow will read the base/ directory
+    """
+
 }
 
 
